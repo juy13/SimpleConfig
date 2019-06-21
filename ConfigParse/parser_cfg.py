@@ -15,14 +15,19 @@ def log(came_log):
 
 tokens = tokins.tokens
 
-def p_program(p):
-	'''program : statement'''
-	p[0] = {}
+lst = []
 
-def p_statement(p):
-	'''statement : sentence
-				 | sentences'''
-	p[0] = (p[1])
+def p_program(p):
+	'''program : sentences'''
+	p[0] = {}
+	if 0 not in p[0]:
+		p[0][0] = [p[1][1]]
+	else:
+		p[0][0].append(p[1][1])
+
+#def p_statement(p):
+#	'''statement : sentences'''
+#	p[0] = (p[1])
 	
 def p_sentences(p):
 	'''sentences : sentence sentences
@@ -30,7 +35,7 @@ def p_sentences(p):
 	if len(p) == 3:
 		p[0] = (p[1], p[2])
 	else:
-		p[0] = (p[1])
+		p[0] = [p[1]]
 
 def p_sentence(p):
 	'''sentence : Length
@@ -46,26 +51,32 @@ def p_sentence(p):
 def p_comment(p):
 	'''Comment : COMMENT'''
 	p[0] = ('Comment', p[1])
+	lst.append(p[0])
 
 def p_length(p):
 	'''Length : length EQ SIZE'''
 	p[0] = ('Length', p[3])
+	lst.append(p[0])
 
 def p_heigth(p):
 	'''Heigth : heigth EQ SIZE'''
 	p[0] = ('Heigth', p[3])
+	lst.append(p[0])
 
 def p_color(p):
 	'''Color : color EQ COL'''
 	p[0] = ('Color', p[3])
+	lst.append(p[0])
 
 def p_name(p):
 	'''Name : name EQ NAMES'''
 	p[0] = ('Name', p[3])
+	lst.append(p[0])
 
 def p_version(p):
 	'''Version : version EQ VER'''
 	p[0] = ('Version', p[3])
+	lst.append(p[0])
 
 def p_error(p):
 	pass
@@ -101,3 +112,4 @@ if __name__ == '__main__':
 	#dex2r_lex.log()
 	prog = parse(data, 1)
 	print(prog)
+	print(lst)
